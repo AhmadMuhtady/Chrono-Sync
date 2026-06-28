@@ -12,10 +12,23 @@ class App {
 			const uiManager = new UIManager(this.container, this.EventBus, tz);
 
 			this.clocks.push({
+				tz,
 				ClockManager: clockManager,
 				UIManager: uiManager,
 			});
 		});
+
+		this.EventBus.subscribe('clock:remove', this.removeClock.bind(this));
+	}
+
+	removeClock(tz) {
+		const index = this.clocks.findIndex((c) => c.tz === tz);
+		if (index === -1) return;
+
+		const { ClockManager, UIManager } = this.clocks[index];
+		ClockManager.stop();
+		UIManager.unmount();
+		this.clocks.splice(index, 1);
 	}
 
 	start() {
