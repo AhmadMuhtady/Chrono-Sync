@@ -1,27 +1,40 @@
-export class UIManager {
-	constructor(container, eventBus) {
+export default class UIManager {
+	constructor(
+		container,
+		eventBus,
+		config = Intl.DateTimeFormat().resolvedOptions().timeZone,
+	) {
 		this.container = container;
+		this.clockContainer = document.createElement('div');
 		this.eventBus = eventBus;
 		this.handleRender = null;
+		this.config = config;
 	}
 
 	mount() {
 		this.handleRender = this.renderClock.bind(this);
-		this.eventBus.subscribe('time:update', this.handleRender);
+		this.eventBus.subscribe(`time:update:${this.config}`, this.handleRender);
+		this.container.appendChild(this.clockContainer);
 	}
 
 	unmount() {
 		if (this.handleRender)
-			this.eventBus.unsubscribe('time:update', this.handleRender);
+			this.eventBus.unsubscribe(
+				`time:update:${this.config}`,
+				this.handleRender,
+			);
+		this.handleRender = null;
+		this.clockContainer.remove();
 	}
 
 	renderClock(tick) {
 		const [time, mark] = tick.getFormattedTime().split(' ');
 		const [hours, mints, seconds] = time.split(':');
+		const [, city] = this.config.replaceAll('_', ' ').split('/');
 		const digitalHTML = `
     <div
 					class="glass-card p-10 rounded-xl border border-outline-variant/30 group relative"
-					id="digital"
+					data-city="${city}"
 				>
 					<div class="flex justify-between items-start mb-6">
 						<div>
@@ -29,7 +42,7 @@ export class UIManager {
 								<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
 								<span
 									class="font-label-caps text-label-caps text-tertiary uppercase"
-									>NEW YORK, US</span
+									>${city}</span
 								>
 							</div>
 							<div
@@ -73,6 +86,6 @@ export class UIManager {
 				</div>
     `;
 
-		this.container.innerHTML = digitalHTML;
+		this.clockContainer.innerHTML = digitalHTML;
 	}
 }

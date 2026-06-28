@@ -1,4 +1,4 @@
-import ClockTime from '../models/ClockTime';
+import ClockTime from '../models/ClockTime.js';
 
 export default class ClockManager {
 	constructor(
@@ -13,11 +13,11 @@ export default class ClockManager {
 	start() {
 		if (this.intervalId !== null) return;
 
+		const locale = navigator.language;
 		this.intervalId = setInterval(() => {
 			const date = new Date();
-			const locale = navigator.language;
 			const tick = new ClockTime(date, this.config, locale);
-			this.eventBus.emit('time:update', tick);
+			this.eventBus.emit(`time:update:${this.config}`, tick);
 		}, 1000);
 	}
 	stop() {
