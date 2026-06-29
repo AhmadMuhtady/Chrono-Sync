@@ -7,6 +7,7 @@ class App {
 	container = document.getElementById('clock-container');
 	configs = [];
 	clocks = [];
+	started = false;
 	constructor() {
 		this.EventBus = new EventBus();
 		this.form = new FormManager(this.EventBus);
