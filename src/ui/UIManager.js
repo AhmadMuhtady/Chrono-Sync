@@ -1,4 +1,5 @@
 import { digitalRender } from './views/digitalViews.js';
+import { analogRender } from './views/analogView.js';
 export default class UIManager {
 	constructor(
 		container,
@@ -50,7 +51,8 @@ export default class UIManager {
 
 	renderClock(tick) {
 		this.lastTick = tick;
-		const html = digitalRender(tick, this.use24h);
+		// const html = digitalRender(tick, this.use24h);
+		const html = analogRender(tick);
 
 		this.clockContainer.innerHTML = html;
 	}

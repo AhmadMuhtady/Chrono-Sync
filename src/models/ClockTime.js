@@ -10,7 +10,7 @@ export default class ClockTime {
 			hour: '2-digit',
 			minute: '2-digit',
 			second: '2-digit',
-			milliseconds: '2-digit',
+			fractionalSecondDigits: 3,
 			hour12: true,
 			timeZone: this.timezone,
 		}).formatToParts(this.date);
@@ -29,7 +29,7 @@ export default class ClockTime {
 			hours24: find(parts24, 'hour'),
 			minutes: find(parts12, 'minute'),
 			seconds: find(parts12, 'second'),
-			milliseconds: find(parts12, 'second'),
+			milliseconds: find(parts12, 'fractionalSecond'),
 			meridiem: find(parts12, 'dayPeriod'),
 		};
 	}
