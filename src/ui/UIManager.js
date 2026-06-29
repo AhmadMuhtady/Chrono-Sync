@@ -5,6 +5,7 @@ export default class UIManager {
 		container,
 		eventBus,
 		config = Intl.DateTimeFormat().resolvedOptions().timeZone,
+		type = 'digital',
 	) {
 		this.container = container;
 		this.clockContainer = document.createElement('div');
@@ -14,6 +15,7 @@ export default class UIManager {
 		this.config = config;
 		this.use24h = false;
 		this.lastTick = null;
+		this.type = type;
 	}
 
 	mount() {
@@ -49,10 +51,21 @@ export default class UIManager {
 		}
 	}
 
+	handleClockType(tick) {
+		switch (this.type) {
+			case 'analog':
+				return analogRender(tick);
+
+			case 'digital':
+				return digitalRender(tick, this.use24h);
+		}
+	}
+
 	renderClock(tick) {
 		this.lastTick = tick;
 		// const html = digitalRender(tick, this.use24h);
-		const html = analogRender(tick);
+		// const html = analogRender(tick);
+		const html = this.handleClockType(tick);
 
 		this.clockContainer.innerHTML = html;
 	}
