@@ -5,9 +5,9 @@ import FormManager from './ui/FormManager.js';
 
 class App {
 	container = document.getElementById('clock-container');
-	configs = [];
 	clocks = [];
 	started = false;
+
 	constructor() {
 		this.EventBus = new EventBus();
 		this.form = new FormManager(this.EventBus);
@@ -16,7 +16,7 @@ class App {
 			.getElementById('add-clock')
 			.addEventListener('click', () => this.form.open());
 
-		this.configs.forEach((config) => this.addClock(config));
+		this.loadConfigs().forEach((config) => this.addClock(config));
 
 		this.EventBus.subscribe('clock:remove', this.removeClock.bind(this));
 		this.EventBus.subscribe('clock:add', this.addClock.bind(this));
@@ -39,6 +39,8 @@ class App {
 			clockManager.start();
 			uiManager.mount();
 		}
+
+		this.saveConfigs();
 	}
 
 	removeClock(tz) {
@@ -49,6 +51,7 @@ class App {
 		ClockManager.stop();
 		UIManager.unmount();
 		this.clocks.splice(index, 1);
+		this.saveConfigs();
 	}
 
 	start() {
@@ -57,6 +60,19 @@ class App {
 			city.ClockManager.start();
 			city.UIManager.mount();
 		});
+	}
+
+	saveConfigs() {
+		const configs = this.clocks.map(({ tz, type }) => ({ tz, type }));
+		localStorage.setItem('clocks', JSON.stringify(configs));
+	}
+
+	loadConfigs() {
+		try {
+			return JSON.parse(localStorage.getItem('clocks')) || [];
+		} catch {
+			return [];
+		}
 	}
 }
 

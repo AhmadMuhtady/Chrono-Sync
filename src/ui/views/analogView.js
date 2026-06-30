@@ -15,7 +15,7 @@ export const analogRender = (tick) => {
 	const analogHTML = `
 <div
     class="glass-card p-10 rounded-xl border border-outline-variant/30 group relative"
-    id="analog-clock"
+    data-city="${city}"
 >
     <button
         type="button"

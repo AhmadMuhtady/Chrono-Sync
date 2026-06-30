@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="light" lang="en">
+<html class="dark" lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -173,6 +173,97 @@
 			.digital-glow-tertiary {
 				text-shadow: 0 0 20px rgba(150, 68, 0, 0.2);
 			}
+			.flip-unit {
+				position: relative;
+				width: 5rem;
+				height: 7rem;
+				font-size: 3rem;
+				font-weight: 700;
+				perspective: 400px;
+			}
+			.flip-unit .panel {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				height: 3.5rem;
+				overflow: hidden;
+				display: flex;
+				justify-content: center;
+			}
+			.flip-unit .panel span {
+				position: absolute;
+				width: 100%;
+				height: 7rem;
+				line-height: 7rem;
+				text-align: center;
+			}
+			.flip-unit .top {
+				top: 0;
+				border-radius: 0.25rem 0.25rem 0 0;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+			}
+			.flip-unit .top span,
+			.flip-unit .flap-down span {
+				top: 0;
+			}
+			.flip-unit .bottom {
+				bottom: 0;
+				border-radius: 0 0 0.25rem 0.25rem;
+			}
+			.flip-unit .bottom span,
+			.flip-unit .flap-up span {
+				bottom: 0;
+			}
+			.flip-unit .flap {
+				backface-visibility: hidden;
+				z-index: 5;
+				opacity: 0;
+			}
+			.flip-unit .flap-down {
+				top: 0;
+				border-radius: 0.25rem 0.25rem 0 0;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+				transform-origin: bottom;
+				transform: rotateX(0);
+			}
+			.flip-unit .flap-up {
+				bottom: 0;
+				border-radius: 0 0 0.25rem 0.25rem;
+				transform-origin: top;
+				transform: rotateX(90deg);
+			}
+			.flip-unit.flipping .flap-down {
+				animation: flipDown 0.28s ease-in forwards;
+			}
+			.flip-unit.flipping .flap-up {
+				animation: flipUp 0.28s ease-out 0.28s forwards;
+			}
+			@keyframes flipDown {
+				0% {
+					transform: rotateX(0);
+					opacity: 1;
+				}
+				100% {
+					transform: rotateX(-90deg);
+					opacity: 1;
+				}
+			}
+			@keyframes flipUp {
+				0% {
+					transform: rotateX(90deg);
+					opacity: 1;
+				}
+				100% {
+					transform: rotateX(0);
+					opacity: 1;
+				}
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.flip-unit.flipping .flap-down,
+				.flip-unit.flipping .flap-up {
+					animation: none;
+				}
+			}
 		</style>
 	</head>
 	<body
@@ -203,11 +294,6 @@
 					<span class="material-symbols-outlined text-[20px]">add</span>
 					<span class="">Add Clock</span>
 				</button>
-				<button
-					class="p-2.5 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors border border-outline-variant/10"
-				>
-					<span class="material-symbols-outlined">light_mode</span>
-				</button>
 			</div>
 		</header>
 		<main
@@ -219,100 +305,7 @@
 				</h1>
 			</div>
 			<!--  Clock Grid -->
-			<div class="flex flex-col gap-stack-gap" id="clock-container">
-				<!-- flip Clock Card -->
-				<div
-					class="glass-card p-10 rounded-xl border border-outline-variant/30 group relative"
-					id="flip-clock"
-				>
-					<div class="flex justify-between items-start mb-6">
-						<div>
-							<div class="flex items-center gap-2 mb-1">
-								<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
-								<span
-									class="font-label-caps text-label-caps text-secondary uppercase"
-									>TOKYO, JP</span
-								>
-							</div>
-							<div
-								class="mt-4 p-3 rounded-lg bg-surface-container-low/50 border border-outline-variant/10 inline-block"
-							>
-								<p
-									class="text-[10px] text-on-surface-variant mb-0.5 tracking-widest font-label-caps"
-								>
-									DATE
-								</p>
-								<p class="font-bold text-sm">Thursday, May 23</p>
-							</div>
-						</div>
-						<label class="inline-flex items-center cursor-pointer">
-							<input class="sr-only peer" type="checkbox" />
-							<div
-								class="relative w-20 h-10 bg-gray-200 rounded-full peer-focus:outline-none transition-colors duration-300 peer peer-checked:bg-secondary/80"
-							>
-								<div
-									class="absolute top-1 left-1 bg-white w-8 h-8 rounded-full shadow transition-transform duration-300 peer-checked:translate-x-10 flex items-center justify-center font-semibold text-[10px] text-gray-700"
-								>
-									<span class="">12-h</span>
-								</div>
-							</div>
-						</label>
-					</div>
-					<div class="flex flex-col items-center justify-center py-4">
-						<div class="flex gap-4 items-center">
-							<div class="flex gap-1">
-								<div
-									class="w-20 h-28 bg-secondary text-on-primary rounded-lg flex items-center justify-center text-5xl font-bold relative overflow-hidden shadow-lg"
-								>
-									<div
-										class="absolute inset-0 border-b border-black/20 h-1/2"
-									></div>
-									<span class="">1</span>
-								</div>
-								<div
-									class="w-20 h-28 bg-secondary text-on-primary rounded-lg flex items-center justify-center text-5xl font-bold relative overflow-hidden shadow-lg"
-								>
-									<div
-										class="absolute inset-0 border-b border-black/20 h-1/2"
-									></div>
-									<span class="">9</span>
-								</div>
-							</div>
-							<div class="text-secondary text-4xl font-bold animate-pulse">
-								:
-							</div>
-							<div class="flex gap-1">
-								<div
-									class="w-20 h-28 bg-secondary text-on-primary rounded-lg flex items-center justify-center text-5xl font-bold relative overflow-hidden shadow-lg"
-								>
-									<div
-										class="absolute inset-0 border-b border-black/20 h-1/2"
-									></div>
-									<span class="">4</span>
-								</div>
-								<div
-									class="w-20 h-28 bg-secondary text-on-primary rounded-lg flex items-center justify-center text-5xl font-bold relative overflow-hidden shadow-lg"
-								>
-									<div
-										class="absolute inset-0 border-b border-black/20 h-1/2"
-									></div>
-									<span class="">5</span>
-								</div>
-							</div>
-							<div class="flex items-center ml-2">
-								<div
-									class="w-20 h-28 bg-secondary text-on-primary rounded-lg flex items-center justify-center text-4xl font-bold relative overflow-hidden shadow-lg"
-								>
-									<div
-										class="absolute inset-0 border-b border-black/20 h-1/2"
-									></div>
-									<span class="">PM</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<div class="flex flex-col gap-stack-gap" id="clock-container"></div>
 		</main>
 
 		<script src="./src/App.js" type="module"></script>

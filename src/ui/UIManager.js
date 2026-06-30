@@ -1,5 +1,7 @@
 import { digitalRender } from './views/digitalViews.js';
 import { analogRender } from './views/analogView.js';
+import { flipRender } from './views/FlipRender.js';
+
 export default class UIManager {
 	constructor(
 		container,
@@ -16,6 +18,7 @@ export default class UIManager {
 		this.use24h = false;
 		this.lastTick = null;
 		this.type = type;
+		this.flip = null;
 	}
 
 	mount() {
@@ -36,6 +39,7 @@ export default class UIManager {
 			this.clockContainer.removeEventListener('click', this.handleClick);
 		this.handleRender = null;
 		this.handleClick = null;
+		this.flip = null;
 		this.clockContainer.remove();
 	}
 
@@ -47,6 +51,7 @@ export default class UIManager {
 
 		if (e.target.closest('[data-action="toggle-format"]')) {
 			this.use24h = !this.use24h;
+			if (this.type === 'flip') this.flip = null;
 			if (this.lastTick) this.renderClock(this.lastTick);
 		}
 	}
@@ -55,18 +60,26 @@ export default class UIManager {
 		switch (this.type) {
 			case 'analog':
 				return analogRender(tick);
-
 			case 'digital':
+			default:
 				return digitalRender(tick, this.use24h);
 		}
 	}
 
 	renderClock(tick) {
 		this.lastTick = tick;
-		// const html = digitalRender(tick, this.use24h);
-		// const html = analogRender(tick);
-		const html = this.handleClockType(tick);
 
-		this.clockContainer.innerHTML = html;
+		if (this.type === 'flip') {
+			if (!this.flip) {
+				this.clockContainer.innerHTML = '';
+				this.flip = flipRender(tick, this.use24h);
+				this.clockContainer.appendChild(this.flip.el);
+			} else {
+				this.flip.update(tick);
+			}
+			return;
+		}
+
+		this.clockContainer.innerHTML = this.handleClockType(tick);
 	}
 }
