@@ -7,6 +7,7 @@ class App {
 	container = document.getElementById('clock-container');
 	clocks = [];
 	started = false;
+	showControls = true;
 
 	constructor() {
 		this.EventBus = new EventBus();
@@ -26,7 +27,13 @@ class App {
 		if (this.clocks.some((c) => c.tz === tz)) return;
 
 		const clockManager = new ClockManager(this.EventBus, tz);
-		const uiManager = new UIManager(this.container, this.EventBus, tz, type);
+		const uiManager = new UIManager(
+			this.container,
+			this.EventBus,
+			tz,
+			type,
+			this.showControls,
+		);
 
 		this.clocks.push({
 			tz,
@@ -77,5 +84,4 @@ class App {
 }
 
 const app = new App();
-window.app = app;
 app.start();

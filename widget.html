@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-		<title>Chrono-Sync | Precision Dashboard</title>
+		<title>Clock Widget</title>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap"
 			rel="stylesheet"
@@ -267,47 +267,12 @@
 		</style>
 	</head>
 	<body
-		class="bg-background text-on-background font-body-md transition-colors duration-300 precision-grid min-h-screen"
+		class="bg-transparent text-on-background font-body-md transition-colors duration-300"
 	>
-		<!-- TopAppBar -->
-		<header
-			class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-4 bg-white/80 dark:bg-inverse-surface/80 backdrop-blur-xl border-b border-outline-variant/10"
-		>
-			<div class="flex items-center gap-2">
-				<div
-					class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"
-				>
-					<span class="material-symbols-outlined text-white text-[20px]"
-						>schedule</span
-					>
-				</div>
-				<span
-					class="font-headline-md text-xl font-bold tracking-tighter text-on-surface"
-					>Clockap</span
-				>
-			</div>
-			<div class="flex items-center gap-4">
-				<button
-					class="flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-medium rounded-lg hover:bg-primary-container transition-all active:scale-95 shadow-sm shadow-primary/20"
-					id="add-clock"
-				>
-					<span class="material-symbols-outlined text-[20px]">add</span>
-					<span class="">Add Clock</span>
-				</button>
-			</div>
-		</header>
-		<main
-			class="pt-32 pb-32 px-container-padding-mobile md:px-container-padding-desktop max-w-[1200px] mx-auto"
-		>
-			<div class="mb-16">
-				<h1 class="font-headline-lg text-headline-lg text-on-surface mb-3">
-					TIME MANAGEMENT
-				</h1>
-			</div>
-			<!--  Clock Grid -->
-			<div class="flex flex-col gap-stack-gap" id="clock-container"></div>
+		<main class="w-full p-4">
+			<div class="flex flex-col gap-4" id="root"></div>
 		</main>
 
-		<script src="./src/App.js" type="module"></script>
+		<script src="./src/WidgetApp.js" type="module"></script>
 	</body>
 </html>

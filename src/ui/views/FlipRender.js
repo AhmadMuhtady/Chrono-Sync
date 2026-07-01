@@ -1,4 +1,4 @@
-export const flipRender = (initialTick, use24h = false) => {
+export const flipRender = (initialTick, use24h = false, showControls) => {
 	const makeDigit = (initial) => {
 		const el = document.createElement('div');
 		el.className = 'flip-unit';
@@ -62,7 +62,7 @@ export const flipRender = (initialTick, use24h = false) => {
 			type="button"
 			data-action="delete"
 			aria-label="Remove ${city} clock"
-			class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-error text-on-error shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10"
+			class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-error text-on-error shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 z-10 ${showControls === false ? 'hidden' : ''}"
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
 				<path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -80,7 +80,7 @@ export const flipRender = (initialTick, use24h = false) => {
 					<p class="font-bold text-sm" data-role="date">${initialTick.getFormattedDate()}</p>
 				</div>
 			</div>
-			<label class="inline-flex items-center cursor-pointer" data-action="toggle-format">
+			<label class="inline-flex items-center cursor-pointer ${showControls === false ? 'hidden' : ''}" data-action="toggle-format">
 				<input class="sr-only peer" type="checkbox" ${use24h ? 'checked' : ''} />
 				<div class="relative w-20 h-10 bg-gray-200 rounded-full peer-focus:outline-none transition-colors duration-300 peer peer-checked:bg-secondary/80">
 					<div class="absolute top-1 ${use24h ? 'right' : 'left'}-1 bg-white w-8 h-8 rounded-full shadow flex items-center justify-center font-semibold text-[10px] text-gray-700">
