@@ -1,8 +1,7 @@
 export const digitalRender = (tick, use24h, showControls) => {
-	const { hours12, hours24, minutes, seconds, meridiem } = tick.getTime();
+	const { hours, minutes, seconds, meridiem } = tick.getTime(use24h);
 	const city = tick.getCity();
 
-	const hours = use24h ? hours24 : hours12;
 	const mark = use24h ? '' : meridiem;
 
 	const digitalHTML = `

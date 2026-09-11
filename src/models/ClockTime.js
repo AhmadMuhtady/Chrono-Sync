@@ -3,34 +3,36 @@ export default class ClockTime {
 		this.date = date;
 		this.timezone = timezone;
 		this.userLocale = userLocale;
+
+		if (!Intl.supportedValuesOf('timeZone').includes(this.timezone)) {
+			throw new Error(`ClockTime: unknown timezone "${this.timezone}"`);
+		}
 	}
 
-	getTime() {
-		const parts12 = new Intl.DateTimeFormat(this.userLocale, {
-			hour: '2-digit',
-			minute: '2-digit',
-			second: '2-digit',
-			fractionalSecondDigits: 3,
-			hour12: true,
+	getTime(use24h = false) {
+		const opts = use24h
+			? {
+					hour: '2-digit',
+					minute: '2-digit',
+					second: '2-digit',
+					hourCycle: 'h23',
+				}
+			: { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+
+		const parts = new Intl.DateTimeFormat('en-US', {
+			...opts,
 			timeZone: this.timezone,
 		}).formatToParts(this.date);
 
-		const parts24 = new Intl.DateTimeFormat(this.userLocale, {
-			hour: '2-digit',
-			hourCycle: 'h23',
-			timeZone: this.timezone,
-		}).formatToParts(this.date);
-
-		const find = (parts, type) =>
-			parts.find((p) => p.type === type)?.value ?? '';
+		const pick = (t) => parts.find((p) => p.type === t)?.value ?? '';
+		const dayPeriod = pick('dayPeriod');
 
 		return {
-			hours12: find(parts12, 'hour'),
-			hours24: find(parts24, 'hour'),
-			minutes: find(parts12, 'minute'),
-			seconds: find(parts12, 'second'),
-			milliseconds: find(parts12, 'fractionalSecond'),
-			meridiem: find(parts12, 'dayPeriod'),
+			hours: pick('hour'),
+			minutes: pick('minute'),
+			seconds: pick('second'),
+			milliseconds: String(this.date.getMilliseconds()).padStart(3, '0'),
+			meridiem: dayPeriod,
 		};
 	}
 

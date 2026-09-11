@@ -48,9 +48,9 @@ export const flipRender = (initialTick, use24h = false, showControls) => {
 		};
 	};
 
-	const t = initialTick.getTime();
+	const t = initialTick.getTime(use24h);
 	const city = initialTick.getCity();
-	const hours0 = use24h ? t.hours24 : t.hours12;
+	const hours0 = t.hours;
 
 	const root = document.createElement('div');
 	root.className =
@@ -126,8 +126,8 @@ export const flipRender = (initialTick, use24h = false, showControls) => {
 	const meridiemEl = root.querySelector('[data-role="meridiem"]');
 
 	const update = (tick) => {
-		const tt = tick.getTime();
-		hoursReel(use24h ? tt.hours24 : tt.hours12);
+		const tt = tick.getTime(use24h);
+		hoursReel(tt.hours);
 		minutesReel(tt.minutes);
 		secondsReel(tt.seconds);
 		if (dateEl) dateEl.textContent = tick.getFormattedDate();

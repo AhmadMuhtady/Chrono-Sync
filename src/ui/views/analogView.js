@@ -1,8 +1,6 @@
 export const analogRender = (tick, showControls) => {
-	const { hours12, minutes, seconds, milliseconds } = tick.getTime();
-	const city = tick.getCity();
-
-	const h = Number(hours12);
+	const { hours, minutes, seconds, milliseconds } = tick.getTime(); // default 12h
+	const h = Number(hours);
 	const m = Number(minutes);
 	const s = Number(seconds);
 	const ms = Number(milliseconds);
