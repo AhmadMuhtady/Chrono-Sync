@@ -6,6 +6,7 @@ export default class FormManager {
 	}
 
 	open() {
+		if (this.handleKeydown !== null) return;
 		const zones = Intl.supportedValuesOf('timeZone');
 		const zoneOptions = zones
 			.map((z) => `<option value="${z}">${z.replaceAll('_', ' ')}</option>`)

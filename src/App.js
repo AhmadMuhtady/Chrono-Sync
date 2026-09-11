@@ -81,7 +81,15 @@ class App {
 			return [];
 		}
 	}
+
+	unmount() {
+		this.clocks.forEach((c) => {
+			c.ClockManager.stop();
+			c.UIManager.unmount();
+		});
+	}
 }
 
 const app = new App();
+window.app = app;
 app.start();
